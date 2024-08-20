@@ -215,6 +215,7 @@ DELETE FROM grados
 WHERE codigo_grado = 25;
 
 /* 21. Eliminar al estudiante con teléfono 22451323 y correo electrónico katalb@correo.com */
+SET SQL_SAFE_UPDATES = 0;
 
 DELETE FROM estudiantes
 WHERE telefono = 22451323
@@ -288,6 +289,35 @@ inner join editoriales on  libros.codigo_editorial = editoriales.codigo_editoria
 WHERE
 precio < 150;
 
-/* 29. */
+/* 29. Mostrar título de libro, número de páginas, nombre del autor, de los libros prestados entre los meses de junio y julio de
+2018.
+Crear una vista con la consulta anterior, el nombre queda a su gusto. */
+CREATE VIEW view_datos_libros_filtrados AS
+SELECT 
+    libros.titulo AS nombre_libro,
+    libros.numero_paginas,
+    autores.nombre AS nombre_autor
+    
+FROM libros
 
+INNER JOIN autores ON libros.codigo_autor = autores.codigo_autor
+INNER JOIN prestamos ON libros.codigo_libro = prestamos.codigo_libro
+WHERE prestamos.fecha_prestamo BETWEEN '2018-06-01' AND '2018-07-31';
+
+/* 30. Listar el título de los libros prestados por el empleado con nombre “Ana Maribel” y apellido “Bacajol”
+Crear una vista con la consulta anterior, el nombre queda a su gusto. */
+
+CREATE VIEW datos_libros_ana AS
+SELECT 
+    libros.titulo
+FROM 
+    libros
+INNER JOIN 
+    prestamos ON libros.codigo_libro = prestamos.codigo_libro
+INNER JOIN 
+    empleados ON prestamos.codigo_empleado = empleados.codigo_empleado
+WHERE 
+    empleados.nombre = 'Ana Maribel'
+AND 
+    empleados.apellido = 'Bacajol';
 
